@@ -18,26 +18,53 @@ public class SplineFollow : MonoBehaviour
 
     void Update()
     {
+        if (path == null || path.SegmentCount <= 0) return;
+
         if (travelByDistance)
         {
             // TODO: Advance distance by speed over the frame and look up u for that distance.
             // Stop at TotalLength.
+            _distance += speed * Time.deltaTime;
+            _distance = Mathf.Min(_distance, path.TotalLength);
+
+            _u = path.ParameterAtDistance(_distance);
         }
         else
         {
             // TODO: Advance u in equal steps, paced so the trip takes as long as the distance
             // trip at the same speed. Stop at SegmentCount.
+            _u += (speed / path.TotalLength) * path.SegmentCount * Time.deltaTime;
+            _u = Mathf.Min(_u, path.SegmentCount);
         }
 
         // TODO: Place this object at the path point for u. Replay should return it to the start.
 
         // TODO: Look at the target if faceTarget is on, otherwise along the path tangent.
         // Use world up so the horizon stays level.
+        transform.position = path.SamplePoint(_u);
+
+        if (faceTarget && target != null)
+        {
+            Vector3 direction = target.position - transform.position;
+            if (direction.sqrMagnitude > 0.001f) transform.rotation = Quaternion.LookRotation(direction, Vector3.up);
+        }
+
+        else
+        {
+            Vector3 tangent = path.SampleTangent(_u);
+
+            if (tangent.sqrMagnitude > 0.001f) transform.rotation = Quaternion.LookRotation(tangent, Vector3.up);
+        }
     }
 
     public void Restart()
     {
         _distance = 0f;
         _u = 0f;
+
+        if (path != null)
+        {
+            transform.position = path.SamplePoint(0f);
+        }
     }
 }

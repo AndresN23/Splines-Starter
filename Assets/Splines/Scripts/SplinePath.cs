@@ -125,7 +125,30 @@ public class SplinePath : MonoBehaviour
     {
         // TODO: Return the u at a distance along the path. Interpolate u (not position)
         // between the two rows around it.
+        if (_distanceTable == null || _distanceTable.Count == 0)
         return 0f;
+
+    distance = Mathf.Clamp(distance, 0f, TotalLength);
+
+    for (int i = 1; i < _distanceTable.Count; i++)
+    {
+        DistanceRow previous = _distanceTable[i - 1];
+        DistanceRow current = _distanceTable[i];
+
+        if (distance <= current.distance)
+        {
+            float distanceRange = current.distance - previous.distance;
+
+            if (distanceRange <= 0f)
+                return previous.u;
+
+            float t = (distance - previous.distance) / distanceRange;
+
+            return Mathf.Lerp(previous.u, current.u, t);
+        }
+    }
+
+    return SegmentCount;
     }
 
     void OnDrawGizmos()
@@ -134,8 +157,11 @@ public class SplinePath : MonoBehaviour
         // CurveGizmos calls your sampling function with a value from 0 to 1, but SamplePoint
         // expects u from 0 to SegmentCount. Scale the value so 0 to 1 covers the whole
         // path, not just the first segment, and ask for enough samples for every segment.
+        if (points == null || points.Length < 4) return;
+        
+        int SegmentCount = (points.Length - 1) / 3;
         int totalSamples = samplesPerSegment * SegmentCount;
         
-       CurveGizmos.Draw(totalSamples, t => SamplePoint (t * SegmentCount), points);
+       CurveGizmos.Draw(totalSamples + 1, t => SamplePoint (t * SegmentCount), points);
     }
 }
