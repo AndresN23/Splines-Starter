@@ -3105,7 +3105,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &2132287836
 SpriteRenderer:
   serializedVersion: 3
@@ -3199,15 +3199,67 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 450308296160980745, guid: 456e85e9c9839374d84cd78f938e0e2c, type: 3}
       propertyPath: m_SelectedEdges.Array.size
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 450308296160980745, guid: 456e85e9c9839374d84cd78f938e0e2c, type: 3}
       propertyPath: m_SelectedFaces.Array.size
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 450308296160980745, guid: 456e85e9c9839374d84cd78f938e0e2c, type: 3}
+      propertyPath: 'm_SelectedFaces.Array.data[0]'
+      value: 125
       objectReference: {fileID: 0}
     - target: {fileID: 450308296160980745, guid: 456e85e9c9839374d84cd78f938e0e2c, type: 3}
       propertyPath: m_SelectedVertices.Array.size
-      value: 0
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 450308296160980745, guid: 456e85e9c9839374d84cd78f938e0e2c, type: 3}
+      propertyPath: m_SelectedEdges.Array.data[0].a
+      value: 478
+      objectReference: {fileID: 0}
+    - target: {fileID: 450308296160980745, guid: 456e85e9c9839374d84cd78f938e0e2c, type: 3}
+      propertyPath: m_SelectedEdges.Array.data[0].b
+      value: 479
+      objectReference: {fileID: 0}
+    - target: {fileID: 450308296160980745, guid: 456e85e9c9839374d84cd78f938e0e2c, type: 3}
+      propertyPath: m_SelectedEdges.Array.data[1].a
+      value: 479
+      objectReference: {fileID: 0}
+    - target: {fileID: 450308296160980745, guid: 456e85e9c9839374d84cd78f938e0e2c, type: 3}
+      propertyPath: m_SelectedEdges.Array.data[1].b
+      value: 476
+      objectReference: {fileID: 0}
+    - target: {fileID: 450308296160980745, guid: 456e85e9c9839374d84cd78f938e0e2c, type: 3}
+      propertyPath: m_SelectedEdges.Array.data[2].a
+      value: 476
+      objectReference: {fileID: 0}
+    - target: {fileID: 450308296160980745, guid: 456e85e9c9839374d84cd78f938e0e2c, type: 3}
+      propertyPath: m_SelectedEdges.Array.data[2].b
+      value: 477
+      objectReference: {fileID: 0}
+    - target: {fileID: 450308296160980745, guid: 456e85e9c9839374d84cd78f938e0e2c, type: 3}
+      propertyPath: m_SelectedEdges.Array.data[3].a
+      value: 477
+      objectReference: {fileID: 0}
+    - target: {fileID: 450308296160980745, guid: 456e85e9c9839374d84cd78f938e0e2c, type: 3}
+      propertyPath: m_SelectedEdges.Array.data[3].b
+      value: 478
+      objectReference: {fileID: 0}
+    - target: {fileID: 450308296160980745, guid: 456e85e9c9839374d84cd78f938e0e2c, type: 3}
+      propertyPath: 'm_SelectedVertices.Array.data[0]'
+      value: 476
+      objectReference: {fileID: 0}
+    - target: {fileID: 450308296160980745, guid: 456e85e9c9839374d84cd78f938e0e2c, type: 3}
+      propertyPath: 'm_SelectedVertices.Array.data[1]'
+      value: 478
+      objectReference: {fileID: 0}
+    - target: {fileID: 450308296160980745, guid: 456e85e9c9839374d84cd78f938e0e2c, type: 3}
+      propertyPath: 'm_SelectedVertices.Array.data[2]'
+      value: 479
+      objectReference: {fileID: 0}
+    - target: {fileID: 450308296160980745, guid: 456e85e9c9839374d84cd78f938e0e2c, type: 3}
+      propertyPath: 'm_SelectedVertices.Array.data[3]'
+      value: 477
       objectReference: {fileID: 0}
     - target: {fileID: 1953769019319548792, guid: 456e85e9c9839374d84cd78f938e0e2c, type: 3}
       propertyPath: m_LocalPosition.x
