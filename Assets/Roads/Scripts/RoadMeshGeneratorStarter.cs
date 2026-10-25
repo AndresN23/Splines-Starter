@@ -11,6 +11,7 @@ public class RoadMeshGeneratorStarter : MonoBehaviour
     public SplinePath splinePath;   
     public Material material; 
     public float textureRepeatLength = 2f;
+    public bool rebuildEveryFrame;
     public float[] bankAngles;
 
     MeshFilter _meshFilter; 
@@ -27,8 +28,8 @@ public class RoadMeshGeneratorStarter : MonoBehaviour
 
     void Update()
     {
-        // if (rebuildEveryFrame)
-        //     BuildRoadMesh(); 
+        if (rebuildEveryFrame)
+           BuildRoadMesh(); 
     }
 
     void BuildRoadMesh()
@@ -36,12 +37,13 @@ public class RoadMeshGeneratorStarter : MonoBehaviour
         List<Vector3> verts = new();
         List<Vector2> uvs = new();
         Array.Resize(ref bankAngles, splinePath.SegmentCount + 1);
+
         for (int i = 0; i < rungs; i++)
         {
             
             //get distance to the rung
             float fraction = i / (float)(rungs - 1);
-            float distance = splinePath.TotalLength / fraction;
+            float distance = splinePath.TotalLength * fraction;
             //use distance to look up u 
 
             float u = splinePath.ParameterAtDistance(distance);
@@ -55,13 +57,16 @@ public class RoadMeshGeneratorStarter : MonoBehaviour
             //bank angles 
             int segment = (int)Mathf.Min(u, splinePath.SegmentCount - 1); 
             float t = u - segment;
-            float bankAngle = Mathf.Lerp(bankAngles[segment], bankAngles[segment + 1], 1);
+            float bankAngle = Mathf.SmoothStep(bankAngles[segment], bankAngles[segment + 1], t);
+
+            right = Quaternion.AngleAxis(bankAngle, tangent) * right;
 
 
             float halfWidth = width * 0.5f; 
-            float lift = Mathf.Sin(bankAngle * Mathf.Deg2Rad) + halfWidth;
+            float lift = Mathf.Sin(bankAngle * Mathf.Deg2Rad) * halfWidth;
              
             centerPoint += Vector3.up * Mathf.Abs(lift); 
+
             //create the left and right verts
            
             Vector3 leftvert = centerPoint - right * halfWidth;  
@@ -75,11 +80,11 @@ public class RoadMeshGeneratorStarter : MonoBehaviour
         }
 
         List<int> triangle = new();
-           for (int i = 0; i < rungs; i++)
+           for (int i = 0; i < rungs - 1; i++)
         {
-            int bottomLeft = 1 + 2;
+            int bottomLeft = i * 2;
             int bottomRight = bottomLeft + 1;
-            int topLeft = (i + 2) + 2;
+            int topLeft = (i + 1) * 2;
             int topRight = topLeft + 1;   
 
             
