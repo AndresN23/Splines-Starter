@@ -65,8 +65,10 @@ public class JuicySlider : Slider
         // TODO: Set the spring's new equilibrium. Don't call base.Set here (that moves the handle and
         // should happen in Update). If sendCallback is on and the target changed, invoke onValueChanged
         // with the new target so listeners (e.g. a volume control) know what the value will change to.
+        bool changed = !Mathf.Approximately(spring.equilibrium, target);
         spring.equilibrium = target;
-        if (sendCallback)
-            onValueChanged.Invoke(spring.equilibrium);
+
+        if (sendCallback && changed)
+            onValueChanged.Invoke(target);
     }
 }

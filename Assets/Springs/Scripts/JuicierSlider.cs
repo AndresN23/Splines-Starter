@@ -57,12 +57,23 @@ public class JuicierSlider : MonoBehaviour
         // TODO: While pressed (_isPressed), set handleSpring.equilibrium to the pointer's spot on
         // the track, PointerXOnTrack(). Keep it on the track with
         // Mathf.Clamp(..., -travelHalfWidth, travelHalfWidth).
+        if (_isPressed)
+        {
+            handleSpring.equilibrium = Mathf.Clamp(
+                PointerXOnTrack(),
+                -travelHalfWidth,
+                travelHalfWidth
+            );
+        }        
 
         // TODO: Set pressSpring.equilibrium to 1 while pressed and 0 otherwise.
+        pressSpring.equilibrium = _isPressed ? 1f : 0f;
 
         // TODO: Step both springs with handleSpring.Advance(Time.deltaTime) and
         // pressSpring.Advance(Time.deltaTime). Don't move anything here (that happens in
         // UpdateHandleVisuals).
+        handleSpring.Advance(Time.deltaTime);
+        pressSpring.Advance(Time.deltaTime);
 
         UpdateHandleVisuals();
     }
@@ -70,11 +81,12 @@ public class JuicierSlider : MonoBehaviour
     void UpdatePressedState()
     {
         // Let go anywhere and the press ends, even off the slider.
-        if (_isPressed && !Mouse.current.leftButton.isPressed)
+        if (_isPressed && (Mouse.current == null ||!Mouse.current.leftButton.isPressed))
         {
             // TODO: On release, set handleSpring.equilibrium to the nearest slot,
             // NearestSlot(handleSpring.equilibrium). The spring carries the handle there.
             // Watch out: change the target, not the spring's value. SetValue would teleport the handle.
+            handleSpring.equilibrium = NearestSlot(handleSpring.equilibrium);
             _isPressed = false;
         }
 
@@ -91,10 +103,17 @@ public class JuicierSlider : MonoBehaviour
     {
         // TODO: Slide the handle: start from _restSliderPosition, add handleSpring.Value to its x,
         // and assign the result to transform.localPosition.
-
+        Vector3 sliderPosition = _restSliderPosition;
+        sliderPosition.x += handleSpring.Value;
+        transform.localPosition = sliderPosition;
         // TODO: Dip the top: start from _restHandlePosition, add pressDepth * pressSpring.Value to
         // its y, and assign the result to handleTransform.localPosition.
-
+        if (handleTransform != null)
+        {
+            Vector3 handlePosition = _restHandlePosition;
+            handlePosition.y += pressDepth * pressSpring.Value;
+            handleTransform.localPosition = handlePosition;
+        }
         // Watch out: start from the rest positions every frame. Adding to the current position
         // would add the offset again each frame, and the handle would drift away.
     }
